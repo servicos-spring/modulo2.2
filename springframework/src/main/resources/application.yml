@@ -1,0 +1,10 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: login
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/person?serverSelectionTimeoutMS=15000&connectTimeoutMS=15000
+      auto-index-creation: true

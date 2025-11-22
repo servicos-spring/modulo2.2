@@ -9,7 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/v1/auth")
 public class AuthController {
     private final TokenSecurity tokenSecurity;
 
@@ -22,12 +22,5 @@ public class AuthController {
     public AuthResponse login(@RequestBody UserRequest request) {
         Token token = tokenSecurity.generateToken(UserControllerAdapter.cast(request));
         return new AuthResponse(token.value());
-    }
-
-
-    @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/forget/{username}")
-    public String forgetPassword(@PathVariable("username") String username) {
-        return "Olá " + username + " enviamos sua senha para o seu email";
     }
 }

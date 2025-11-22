@@ -32,7 +32,7 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Build Imagem
-        run: docker build -t mrspock182/login:latest .
+        run: docker build -t joaoenrique/login:latest .
 
       - name: Deploy Dockerhub
         run: docker push mrspock182/login:latest

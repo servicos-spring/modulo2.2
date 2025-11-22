@@ -17,11 +17,12 @@ public class UserRepositoryImplAdapter {
         );
     }
 
+
     public static UserOrm cast(User user) {
         return new UserOrm(
                 user.id(),
                 user.username(),
-                user.username(),
+                user.password(),
                 user.email()
         );
     }

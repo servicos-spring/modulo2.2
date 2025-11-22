@@ -23,34 +23,20 @@ public class SecurityConfig {
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(
-            HttpSecurity httpSecurity,
-            PasswordEncoder passwordEncoder,
-            UserDetailsService userDetailsService) throws Exception {
-        AuthenticationManagerBuilder builder = httpSecurity
-                .getSharedObject(AuthenticationManagerBuilder.class);
-        builder.userDetailsService(userDetailsService).
-                passwordEncoder(passwordEncoder);
+    public AuthenticationManager authenticationManager(HttpSecurity httpSecurity, PasswordEncoder passwordEncoder, UserDetailsService userDetailsService) throws Exception {
+        AuthenticationManagerBuilder builder = httpSecurity.getSharedObject(AuthenticationManagerBuilder.class);
+        builder.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
         return builder.build();
     }
 
     @Bean
-    public SecurityFilterChain filterChain(
-            JWTSecurity jwtSecurity,
-            HttpSecurity httpSecurity,
-            UserDetailsService userDetails) throws Exception {
+    public SecurityFilterChain filterChain(JWTSecurity jwtSecurity, HttpSecurity httpSecurity, UserDetailsService userDetails) throws Exception {
         JwtAuthFilterSecurity jwtFilter = new JwtAuthFilterSecurity(jwtSecurity, userDetails);
         httpSecurity.csrf(AbstractHttpConfigurer::disable)
-                .sessionManagement(sm -> sm.sessionCreationPolicy(
-                        SessionCreationPolicy.STATELESS))
+                .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(
-                                "/users/save/**",
-                                "/auth/login/**")
-                        .permitAll()
-                        .anyRequest()
-                        .authenticated())
-                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+                        .requestMatchers( "/v1/auth/users/**", "/v1/auth/login/**")
+                        .permitAll().anyRequest().authenticated()).addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
         return httpSecurity.build();
     }
 }

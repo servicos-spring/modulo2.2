@@ -16,9 +16,7 @@ public class UserRepositoryImpl implements UserRepository {
     private final PasswordEncoder encoder;
     private final UserRepositoryWithMongodb repository;
 
-    public UserRepositoryImpl(
-            PasswordEncoder encoder,
-            UserRepositoryWithMongodb repository) {
+    public UserRepositoryImpl(PasswordEncoder encoder, UserRepositoryWithMongodb repository) {
         this.encoder = encoder;
         this.repository = repository;
     }
@@ -28,21 +26,6 @@ public class UserRepositoryImpl implements UserRepository {
         try {
             UserOrm orm = repository.save(UserRepositoryImplAdapter.cast(user));
             return UserRepositoryImplAdapter.cast(orm, encoder);
-        } catch (Exception ex) {
-            throw new RuntimeException(ex);
-        }
-    }
-
-    @Override
-    public User findByUsername(String nomeUsuario) {
-        try {
-            Optional<UserOrm> optional = repository.findByUsername(nomeUsuario);
-            if (optional.isEmpty()) {
-                throw new UsernameNotFoundException("Usuario não encontrado");
-            }
-            return UserRepositoryImplAdapter.cast(optional.get(), encoder);
-        } catch (UsernameNotFoundException ex) {
-            throw ex;
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
